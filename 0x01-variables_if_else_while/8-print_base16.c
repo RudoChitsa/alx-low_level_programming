@@ -1,22 +1,24 @@
 #include <stdio.h>
-#include <stdlib.h>
-
 /**
- * main - Entry point
- * Return:0
+ * main -Entry point
+ * Return: Always 0 (Success)
  */
 int main(void)
 {
-	int i, y;
-	for (i = 0; i < 10; i++)
-	{
-		putchar (i + '0');
-	}
-	for (y = 'a'; y <= 'f'; y++)
-	{
-		putchar (y);
-	}
+	char c = 'a';
+	int num;
 
-putchar('\n');
-return (0);
+	for (num = 0; num < 16; num++)
+	{
+		if (num < 10)
+		{
+			putchar(num + '0');
+		} else
+		{
+			putchar(c);
+			c++;
+		}
+	}
+	putchar('\n');
+	return (0);
 }
