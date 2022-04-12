@@ -11,7 +11,7 @@ int main(void)
 	int i = 0;
 	char a[] = "_putchar";
 
-	while (i < 10)
+	while (i < 11)
 	{
 		_putchar(a[i]);
 		i++;
