@@ -12,7 +12,7 @@ Scope of variables
 What are the gcc flags -Wall -Werror -pedantic -Wextra
 What are header files and how to to use them with #include
 0. _putchar
-Write a program that prints Holberton, followed by a new line.
+Write a program that prints putchar, followed by a new line.
 1. I sometimes suffer from insomnia. And when I can't fall asleep, I play what I call the alphabet game
 Write a function that prints the alphabet, in lowercase, followed by a new line.
 2. 10 x alphabet
