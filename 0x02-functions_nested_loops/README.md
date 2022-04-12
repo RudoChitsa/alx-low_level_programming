@@ -1,4 +1,4 @@
-aUTHOR - RUDO CHITSA
+AUTHOR - RUDO CHITSA
 
 0x02. C - Functions, nested loops
 Description
