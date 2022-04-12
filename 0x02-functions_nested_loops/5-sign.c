@@ -1,9 +1,12 @@
 #include "main.h"
 
 /**
- * main - check the code.
+ * print_sign - Print the sign of a number
  *
- * Return: Always 0.
+ * @n: Number
+ *
+ * Return: 1 (is greater that zero) OR 0 (is zero)
+ * OR -1 (is less that zero)
  */
 int print_sign(int n)
 {
