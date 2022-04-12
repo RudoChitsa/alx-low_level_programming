@@ -5,13 +5,15 @@
  *
  * Return: Always 0 (Success)
  */
+
 int main(void)
 {
 	int i = 0;
-	char a[] = "_putchar";
-	while (i < 11)
+	char name_of_school[] = "\_putchar";
+
+	while (i < 9)
 	{
-		_putchar(a[i]);
+		_putchar(name_of_school[i]);
 		i++;
 	}
 	_putchar('\n');
