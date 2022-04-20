@@ -2,27 +2,13 @@
 #include <stdio.h>
 
 /**
- * _strcat - function with two argument
- * @dest: char type pointer 1st argument
- * @src: char type pointer 2nd argument
+ * reset_to_98 - function with one argument
+ * @n: int type pointer n
  *
- * Description: concatenates two strings
- * Return: na
+ * Description: using pointer as parameter to update value it points to 98
+ * Return: value
  */
-char *_strcat(char *dest, char *src)
+void reset_to_98(int *n)
 {
-	char *start = dest;
-
-	while (*dest != '\0')
-	{
-		dest++;
-	}
-	while (*src != '\0')
-	{
-		*dest = *src;
-		dest++;
-		src++;
-	}
-	*dest = '\0';
-	return (start);
+	*n = 98;
 }
