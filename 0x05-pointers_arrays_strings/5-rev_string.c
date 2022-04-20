@@ -7,12 +7,22 @@
  */
 void rev_string(char *s)
 {
-	int main(void)
-{
-    char s[10] = "My School";
+	int i, j;
+	char r[1000];
 
-    printf("%s\n", s);
-    rev_string(s);
-    printf("%s\n", s);
-    return (0);
+
+	i = j = 0;
+	while (s[i] != '\0')
+	{
+		r[i] = s[i];
+		i++;
+	}
+	i--;
+	while (i >= 0)
+	{
+		s[i] = r[j];
+		i--;
+		j++;
+	}
+	s[j++] = '\0';
 }
