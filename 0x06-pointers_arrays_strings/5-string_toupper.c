@@ -7,15 +7,16 @@
  *
  * Return: address of s
  */
-char *string_toupper(char *s)
+char *string_toupper(char *c)
 {
-	int i = 0;
+	int i;
 
-	while (*(s + i))
+	i = 0;
+	while (c[i] != '\0')
 	{
-		if (*(s + i) >= 'a' && *(s + i) <= 'z')
-			*(s + i) -= 'a' - 'A';
+		if (c[i] >= 'a' && c[i] <= 'z')
+			c[i] -= 'a' - 'A';
 		i++;
 	}
-	return (s);
+	return (c);
 }
