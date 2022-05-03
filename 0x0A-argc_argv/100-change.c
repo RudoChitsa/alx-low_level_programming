@@ -25,7 +25,6 @@ int coinConverter(int i)
 		else if (i % 5 == 0)
 			i -= 5;
 		else if (i % 2 == 0)
-			i -= 2;
 		{
 			if (i % 10 == 6)
 				i -= 1;
@@ -49,9 +48,9 @@ int coinConverter(int i)
  */
 int main(int argc, char *argv[])
 {
-	int i, coin;
+	int i, cents;
 
-	coin = 0;
+	cents = 0;
 
 	if (argc != 2)
 	{
@@ -65,9 +64,9 @@ int main(int argc, char *argv[])
 		printf("0\n");
 	else
 	{
-		coin = coinConverter(i);
+		cents = centsConverter(i);
 
-		printf("%d\n", coin);
+		printf("%d\n", cents);
 	}
 
 	return (0);
