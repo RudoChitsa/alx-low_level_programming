@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-
 /**
  * coinConverter - Helper function that does all the mathematics
  * @i: Passed in variable from main for calculations
@@ -48,9 +47,9 @@ int coinConverter(int i)
  */
 int main(int argc, char *argv[])
 {
-	int i, cents;
+	int i, coin;
 
-	cents = 0;
+	coin = 0;
 
 	if (argc != 2)
 	{
@@ -64,9 +63,9 @@ int main(int argc, char *argv[])
 		printf("0\n");
 	else
 	{
-		cents = centsConverter(i);
+		coin = coinConverter(i);
 
-		printf("%d\n", cents);
+		printf("%d\n", coin);
 	}
 
 	return (0);
