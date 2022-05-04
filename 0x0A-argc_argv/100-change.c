@@ -1,72 +1,52 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdbool.h>
-
 /**
- * coinConverter - Helper function that does all the mathematics
- * @i: Passed in variable from main for calculations
- * Return: The number of coins needed minimum for the passed in variable
+ * subtract_largest_coin - find min number of coins needed to make change
+ * @cents: the amount of money to make change for in cents
+ *
+ * Return: the minimum number of coins needed to make change
  */
-int coinConverter(int i)
+int subtract_largest_coin(int cents)
 {
-	int count = 0;
+	if (cents - 25 > -1)
+		return (cents - 25);
 
-	while (i != 0)
-	{
-		if (i % 10 == 9 || i % 10 == 7)
-			i -= 2;
-		else if (i % 25 == 0)
-			i -= 25;
-		else if (i % 10 == 0)
-			i -= 10;
-		else if (i % 5 == 0)
-			i -= 5;
-		else if (i % 2 == 0)
-		{
-			if (i % 10 == 6)
-				i -= 1;
-			else
-				i -= 2;
-		}
-		else
-			i -= 1;
+	if (cents - 10 > -1)
+		return (cents - 10);
 
-		count++;
-	}
+	if (cents - 5 > -1)
+		return (cents - 5);
 
-	return (count);
+	if (cents - 2 > -1)
+		return (cents - 2);
+
+	if (cents - 1 > -1)
+		return (cents - 1);
+
+	return (0);
 }
 
 /**
- * main - Takes in exactly one argument for minimum coin count
- * @argc: Number of command line arguments
- * @argv: Array name
- * Return: 0 if exactly 1 argument is passed into this program, 1 otherwise
+ * main - print the minimum number of coins needed to make change
+ * @argc: size of the argument vector
+ * @argv: program name and arguments
+ *
+ * Return: 1 if given something other than a single argument,
+ * otherwise 0
  */
 int main(int argc, char *argv[])
 {
-	int i, coin;
-
-	coin = 0;
+	int cents, coins;
 
 	if (argc != 2)
 	{
-		printf("Error\n");
+		puts("Error");
 		return (1);
 	}
 
-	i = atoi(argv[1]);
+	for (cents = atoi(argv[1]), coins = 0; cents > 0; ++coins)
+		cents = subtract_largest_coin(cents);
 
-	if (i < 0)
-		printf("0\n");
-	else
-	{
-		coin = coinConverter(i);
-
-		printf("%d\n", coin);
-	}
+	printf("%d\n", coins);
 
 	return (0);
 }
