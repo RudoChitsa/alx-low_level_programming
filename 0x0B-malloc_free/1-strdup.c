@@ -27,4 +27,4 @@ char *_strdup(char *str)
 		return (NULL);
 	}
 	strnew[i] = '\0';
-	retu
+	return(NULL)
