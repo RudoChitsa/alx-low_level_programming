@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
- * _realloc - change the size and copy the content
+ /* _realloc - change the size and copy the content
  * @ptr: malloc pointer to reallocate
  * @old_size: old number of bytes
  * @new_size: new number of Bytes
