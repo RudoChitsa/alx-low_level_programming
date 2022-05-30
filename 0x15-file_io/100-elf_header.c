@@ -1,48 +1,184 @@
 #include "main.h"
+#include <elf.h>
 
-/**
- * main - create the copy bash script
- * @ac: argument count
- * @av: arguments as strings
- * Return: 0
- */
-int main(int ac, char *av[])
+int main(int argc, char **argv)
 {
-	int input_fd, output_fd, istatus, ostatus;
-	char buf[MAXSIZE];
-	mode_t mode;
+	ssize_t fd, read_res;
+	char buffer[16];
+	size_t i;
+	char match[4] = {0x7f, 'E', 'L', 'F'};
 
-	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-	if (ac != 3)
-		dprintf(SE, "Usage: cp file_from file_to\n"), exit(97);
-	input_fd = open(av[1], O_RDONLY);
-	if (input_fd == -1)
-		dprintf(SE, "Error: Can't read from file %s\n", av[1]), exit(98);
-	output_fd = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, mode);
-	if (output_fd == -1)
-		dprintf(SE, "Error: Can't write to %s\n", av[2]), exit(99);
+	if (argc != 2)
+		err("Improper usage\n");
 
-	do {
-		istatus = read(input_fd, buf, MAXSIZE);
-		if (istatus == -1)
-		{
-			dprintf(SE, "Error: Can't read from file %s\n", av[1]);
-			exit(98);
-		}
-		if (istatus > 0)
-		{
-			ostatus = write(output_fd, buf, (ssize_t) istatus);
-			if (ostatus == -1)
-				dprintf(SE, "Error: Can't write to %s\n", av[2]), exit(99);
-		}
-	} while (istatus > 0);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		err("Could not open file\n");
 
-	istatus = close(input_fd);
-	if (istatus == -1)
-		dprintf(SE, "Error: Can't close fd %d\n", input_fd), exit(100);
-	ostatus = close(output_fd);
-	if (ostatus == -1)
-		dprintf(SE, "Error: Can't close fd %d\n", output_fd), exit(100);
+	read_res = read(fd, buffer, 16);
+	if (read_res < 0)
+		err("Could not read from file\n");
+
+	for (i = 0; i < 4; i++)
+	{
+		if (buffer[i] != match[i])
+			err("Not an ELF file!\n");
+	}
+
+	printf("ELF Header:\n");
+	printmagic(buffer);
+	printclass(buffer);
+	printdata(buffer);
+	printversion(buffer);
+	printos(buffer);
+	printabversion(buffer);
+
+	if (close(fd))
+		err("Could not close file");
 
 	return (0);
+}
+
+void err(char *msg)
+{
+	size_t len;
+
+	for (len = 0; msg[len]; len++)
+		;
+	write(STDERR_FILENO, msg, len);
+
+	exit(98);
+}
+
+void printabversion(char *buffer)
+{
+	ptitle("ABI Version");
+
+	printf("%d", buffer[8]);
+
+	printf("\n");
+}
+
+void printos(char *buffer)
+{
+	ptitle("OS/ABI");
+
+	switch (buffer[7])
+	{
+		case ELFOSABI_SYSV:
+			printf("UNIX - System V");
+			break;
+		case ELFOSABI_HPUX:
+			printf("UNIX - HP-UX");
+			break;
+		case ELFOSABI_NETBSD:
+			printf("UNIX - NetBSD");
+			break;
+		case ELFOSABI_LINUX:
+			printf("UNIX - GNU");
+			break;
+		case ELFOSABI_SOLARIS:
+			printf("UNIX - Solaris");
+			break;
+		case ELFOSABI_IRIX:
+			printf("UNIX - IRIX");
+			break;
+		case ELFOSABI_FREEBSD:
+			printf("UNIX - FreeBSD");
+			break;
+		case ELFOSABI_TRU64:
+			printf("UNIX - TRU64");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[7]);
+	}
+
+	printf("\n");
+}
+
+void printversion(char *buffer)
+{
+	ptitle("Version");
+
+	switch (buffer[6])
+	{
+		case EV_NONE:
+			printf("0");
+			break;
+		case EV_CURRENT:
+			printf("1 (current)");
+			break;
+		default:
+			printf("%d <unknown: %%lx>", (int)buffer[6]);
+	}
+
+	printf("\n");
+}
+
+void printdata(char *buffer)
+{
+	ptitle("Data");
+
+	switch (buffer[5])
+	{
+		case ELFDATANONE:
+			printf("none");
+			break;
+		case ELFDATA2LSB:
+			printf("2's complement, little endian");
+			break;
+		case ELFDATA2MSB:
+			printf("2's complement, big endian");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[5]);
+	}
+
+	printf("\n");
+}
+
+void printmagic(char *buffer)
+{
+	unsigned int i;
+
+	printf("  Magic:   ");
+	for (i = 0; i < 16; i++)
+		printf("%.2x ", buffer[i]);
+	printf("\n");
+}
+
+void printclass(char *buffer)
+{
+	ptitle("Class");
+
+	switch (buffer[4])
+	{
+		case ELFCLASSNONE:
+			printf("none");
+			break;
+		case ELFCLASS32:
+			printf("ELF32");
+			break;
+		case ELFCLASS64:
+			printf("ELF64");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[4]);
+	}
+	printf("\n");
+}
+
+void ptitle(char *title)
+{
+	unsigned int size = 37;
+	unsigned int tlen, i;
+
+	printf("  ");
+	printf("%s:", title);
+
+	for (tlen = 0; title[tlen]; tlen++)
+		;
+
+	for (i = 0; i < size - 3 - tlen; i++)
+		printf(" ");
 }
